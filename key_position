@@ -1,2 +1,59 @@
 #define Motor1 Motor
 #define Motor2 Motoroutside
+int State = 0;
+int State_step = 0;
+//
+
+Task_Monitor()
+{
+   switch(State)
+   {
+     case 1:
+        switch(State_step)
+        {
+          case 0:
+            Motor1.State = PIDPOSITION;
+            Motor1.PositionExpected = Motor1.PositionMeasure;
+          break;
+
+          case 1:
+            if(istouch(DOOR1))
+            {
+              recordpoint11 = Motor1.Position.Measure;
+            }
+            Motor1.State = PIDPOSITION;
+            Motor1.PositionExpected = Motor1.PositionMeasure;
+            State_step = 2;
+          break;
+
+          case 2:
+            if(!istouch(DOOR1))
+            {
+              recordpoint12 = Motor1.Position.Measure;
+            }
+            Motor1.State = PIDSPEED;
+            Motor1.SpeedExpected = Mdirection * set_speed;
+            State_step = 3;
+          break;
+
+          case 3:
+            if(istouch(DOOR1))
+            {
+              recordpoint13 = Motor1.Position.Measure;
+            }
+            State_step = 0;
+          break;
+
+          default:
+          break;
+        }
+     break;
+
+     case 2:
+     break;
+
+     default:
+     break;
+   }
+
+}
