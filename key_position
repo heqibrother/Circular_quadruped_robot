@@ -1,0 +1,2 @@
+#define Motor1 Motor
+#define Motor2 Motoroutside
